@@ -1,7 +1,8 @@
-const { response } = require('express');
-const { validationResult } = require('express-validator');
-const Usuario = require('../models/usuario');
+const { response, request } = require('express');
 const bcryptjs = require('bcryptjs');
+
+const Usuario = require('../models/usuario');
+
 
 const usuariosGet = (req = request, res = response) => {
 
@@ -16,12 +17,8 @@ const usuariosGet = (req = request, res = response) => {
     });
 }
 
-const usuariosPost = async (req, res = response) => {
 
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json(errors);
-    }
+const usuariosPost = async (req, res = response) => {
 
     const { nombre, correo, password, rol } = req.body;
     const usuario = new Usuario({ nombre, correo, password, rol });
@@ -46,6 +43,7 @@ const usuariosPost = async (req, res = response) => {
     });
 }
 
+
 const usuariosPut = (req, res = response) => {
 
     const id = req.params.id;
@@ -56,6 +54,7 @@ const usuariosPut = (req, res = response) => {
     });
 }
 
+
 const usuariosDelete = (req, res = response) => {
 
     res.json({
@@ -63,12 +62,14 @@ const usuariosDelete = (req, res = response) => {
     });
 }
 
+
 const usuariosPatch = (req, res = response) => {
 
     res.json({
         msg: 'patch API - controlador'
     });
 }
+
 
 module.exports = {
     usuariosGet,
