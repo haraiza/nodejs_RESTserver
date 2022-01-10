@@ -10,7 +10,7 @@ const usuariosGet = async (req = request, res = response) => {
     const query = { estado: true };
 
     const [total, usuarios] = await Promise.all([
-        
+
         Usuario.countDocuments(query),
         Usuario.find(query)
             .skip(Number(desde))
@@ -66,10 +66,19 @@ const usuariosPut = async (req, res = response) => {
 }
 
 
-const usuariosDelete = (req, res = response) => {
+const usuariosDelete = async (req, res = response) => {
+
+    const { id } = req.params
+
+    //! Borrado fisicamente - NO SE RECOMIENDA DE ESTA MANERA
+    // const usuario = await Usuario.findByIdAndDelete(id);
+
+    //* Borrado por estado
+    const { nombre } = await Usuario.findByIdAndUpdate(id, { estado: false });
+
 
     res.json({
-        msg: 'delete API - controlador'
+        msg: `El usuario '${nombre}' a sido eliminado`
     });
 }
 
