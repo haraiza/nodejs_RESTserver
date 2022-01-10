@@ -36,13 +36,27 @@ const usuariosPost = async (req, res = response) => {
 }
 
 
-const usuariosPut = (req, res = response) => {
+const usuariosPut = async (req, res = response) => {
 
-    const id = req.params.id;
+    const { id } = req.params;
+
+    //* Se deja fuera password y google. El correo se deja fuera de momento porque 
+    //* sino se mostraria el error de 'Ese correo ya existe' 
+    const { password, google, correo, ...resto } = req.body;
+
+    // TODO validar contra base de datos
+    if (password) {
+        // Encriptar la contraseña (HASH)
+        const salt = bcryptjs.genSaltSync();
+        resto.password = bcryptjs.hashSync(password, salt);
+    }
+
+    // Busca en la DB el id y le envia todos los datos de 'resto'
+    const usuario = await Usuario.findByIdAndUpdate(id, resto);
 
     res.json({
         msg: 'put API - controlador',
-        id
+        usuario
     });
 }
 
