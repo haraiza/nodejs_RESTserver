@@ -42,7 +42,7 @@ const usuariosPut = async (req, res = response) => {
 
     //* Se deja fuera password y google. El correo se deja fuera de momento porque 
     //* sino se mostraria el error de 'Ese correo ya existe' 
-    const { password, google, correo, ...resto } = req.body;
+    const { _id, password, google, correo, ...resto } = req.body;
 
     // TODO validar contra base de datos
     if (password) {
