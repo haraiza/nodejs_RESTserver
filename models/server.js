@@ -31,7 +31,8 @@ class Server {
         // CORS
         this.app.use(cors());
 
-        // Lectura y parseo del body
+        // Lectura y parseo del body. 
+        // Esto permite que cualquier informacion que el usuario le envie por POST, PUT o DELETE la serialize a formato json
         this.app.use(express.json());
 
         // Directorio Publico

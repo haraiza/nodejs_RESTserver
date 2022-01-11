@@ -21,7 +21,6 @@ const UsuarioSchema = Schema({
     rol: {
         type: String,
         required: true,
-
     },
     estado: {
         type: Boolean,
@@ -36,7 +35,8 @@ const UsuarioSchema = Schema({
 
 UsuarioSchema.methods.toJSON = function () {
     // Se remueve la version (v) y el password el usuario para no mostrarlo cuando se usa el toJSON
-    const { __v, password, ...usuario } = this.toObject();
+    const { __v, password, _id, ...usuario } = this.toObject();
+    usuario.uid = _id;
     return usuario;
 }
 
