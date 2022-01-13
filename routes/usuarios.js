@@ -4,7 +4,7 @@ const { check } = require('express-validator');
 
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-JWT');
-const { esAdminRol } = require('../middlewares/validar-roles');
+const { esAdminRol, tieneRol } = require('../middlewares/validar-roles');
 
 
 const { esRolValido, emailExiste, existeUsuarioPorId } = require('../helpers/db-validators');
@@ -43,7 +43,13 @@ router.post('/',
 router.delete('/:id',
     [
         validarJWT,
-        esAdminRol,
+
+        //* Esta validacion hace que solo el usuario que sea ADMIN_ROL pueda ejecutar este router.delete
+        //esAdminRol, 
+
+        //* En cambio si lo hace asi puedo agregar diferentes roles que pueden ejecutar el router.delete
+        tieneRol('ADMIN_ROL', 'VENTAS_ROL'),
+
         check('id', 'No es un id valido').isMongoId(),
         check('id').custom(existeUsuarioPorId),
         validarCampos
