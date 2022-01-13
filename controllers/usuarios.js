@@ -70,19 +70,14 @@ const usuariosDelete = async (req, res = response) => {
 
     const { id } = req.params
 
-    const uid = req.uid;
+    //* Borra usuario (Cambia el estado del usaurio a false)
+    const usuarioQueSeBorrara = await Usuario.findByIdAndUpdate(id, { estado: false });
 
-    //! Borrado fisicamente - NO SE RECOMIENDA DE ESTA MANERA
-    // const usuario = await Usuario.findByIdAndDelete(id);
-
-    //* Borrado por estado
-    const usr = await Usuario.findByIdAndUpdate(id, { estado: false });
-
+    // const usuarioAutenticado = req.usuario;
 
     res.json({
-        msg: `El usuario '${usr.nombre}' a sido eliminado`,
-        usr,
-        uid
+        usuarioQueSeBorrara,
+        // usuarioAutenticado
     });
 }
 
