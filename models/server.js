@@ -1,57 +1,50 @@
-const express = require('express');
-const cors = require('cors');
-const { dbConnection } = require('../database/config');
+const express = require("express");
+const cors = require("cors");
+const { dbConnection } = require("../database/config");
 
 class Server {
+  constructor() {
+    this.app = express();
+    this.port = process.env.PORT;
+    this.usuariosPath = "/api/usuarios";
+    this.authPath = "/api/auth";
 
-    constructor() {
-        this.app = express();
-        this.port = process.env.PORT;
-        this.usuariosPath = '/api/usuarios';
-        this.authPath = '/api/auth';
+    // Conectar a base datos
+    this.conectarDB();
 
-        // Conectar a base datos
-        this.conectarDB();
+    // Middlewares
+    this.middlewares();
 
-        // Middlewares
-        this.middlewares();
+    // Rutas de mi aplicacion
+    this.routes();
+  }
 
-        // Rutas de mi aplicacion
-        this.routes();
-    }
+  async conectarDB() {
+    await dbConnection();
+  }
 
+  middlewares() {
+    // CORS
+    this.app.use(cors());
 
-    async conectarDB() {
-        await dbConnection();
-    }
+    // Lectura y parseo del body.
+    // Esto permite que cualquier informacion que el usuario le envie por POST, PUT o DELETE la serialize a formato json
+    this.app.use(express.json());
 
+    // Directorio Publico
+    this.app.use(express.static("public"));
+  }
 
-    middlewares() {
+  routes() {
+    this.app.use(this.authPath, require("../routes/auth"));
+    this.app.use(this.usuariosPath, require("../routes/usuarios"));
+  }
 
-        // CORS
-        this.app.use(cors());
-
-        // Lectura y parseo del body. 
-        // Esto permite que cualquier informacion que el usuario le envie por POST, PUT o DELETE la serialize a formato json
-        this.app.use(express.json());
-
-        // Directorio Publico
-        this.app.use(express.static('public'));
-    }
-
-
-    routes() {
-
-        this.app.use(this.authPath, require('../routes/auth'));
-        this.app.use(this.usuariosPath, require('../routes/usuarios'));
-    }
-
-
-    listen() {
-        this.app.listen(this.port, () => {
-            console.log(`Servidor corriendo en http://localhost:${this.port}`); 
-        });
-    }
+  listen() {
+    this.app.listen(this.port, () => {
+      console.log(`Servidor corriendo en http://localhost:${this.port}`);
+    });
+  }
 }
 
 module.exports = Server;

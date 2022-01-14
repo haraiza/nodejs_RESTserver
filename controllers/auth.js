@@ -50,7 +50,7 @@ const googleSignIn = async (req, res = response, next) => {
 
   res.json({
     msg: "todo bien",
-    id_token
+    id_token,
   });
 };
 
