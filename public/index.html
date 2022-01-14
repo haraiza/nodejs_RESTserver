@@ -35,7 +35,7 @@
         const body = { id_token: response.credential };
 
         // En DEV es http://localhost:8080/api/auth/google
-        fetch("https://restserver-nodejs-haraiza.herokuapp.com", {
+        fetch("https://restserver-nodejs-haraiza.herokuapp.com/api/auth/google", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
