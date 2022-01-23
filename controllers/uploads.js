@@ -6,8 +6,23 @@ const cargarArchivo = (req, res = response) => {
     return res.status(400).json("No hay archivos que subir");
   }
 
-  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
   const { archivo } = req.files;
+
+  const nombreCortado = archivo.name.split(".");
+  const extension = nombreCortado[nombreCortado.length - 1];
+
+  // Validar la extension
+  const extensionesValidas = ["png", "jpg", "jpeg", "gif"];
+
+  if (!extensionesValidas.includes(extension)) {
+    return res.status(400).json({ msg: "La extension no es valida" });
+  }
+  
+  res.json({ extension: extension });
+
+
+
+  /*
   const uploadPath = path.join(__dirname, "../uploads/", archivo.name);
 
   // Use the mv() method to place the file somewhere on your server
@@ -16,6 +31,8 @@ const cargarArchivo = (req, res = response) => {
 
     res.json({ msh: "El arhcivo se subio a " + uploadPath });
   });
+  */
+
 };
 
 module.exports = {
