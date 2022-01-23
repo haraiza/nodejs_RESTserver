@@ -1,5 +1,6 @@
 const { response } = require("express");
 const path = require("path");
+const { v4: uuidv4 } = require("uuid");
 
 const cargarArchivo = (req, res = response) => {
   if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
@@ -17,22 +18,15 @@ const cargarArchivo = (req, res = response) => {
   if (!extensionesValidas.includes(extension)) {
     return res.status(400).json({ msg: "La extension no es valida" });
   }
-  
-  res.json({ extension: extension });
 
+  const nombreTemp = uuidv4() + "." + extension;
+  const uploadPath = path.join(__dirname, "../uploads/", nombreTemp);
 
-
-  /*
-  const uploadPath = path.join(__dirname, "../uploads/", archivo.name);
-
-  // Use the mv() method to place the file somewhere on your server
   archivo.mv(uploadPath, (err) => {
     if (err) return res.status(500).json({ err });
 
     res.json({ msh: "El arhcivo se subio a " + uploadPath });
   });
-  */
-
 };
 
 module.exports = {
