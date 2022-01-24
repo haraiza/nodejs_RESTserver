@@ -3,3 +3,6 @@ node_modules
 
 # Visual Studio Code
 .vscode
+
+uploads/productos/**.*
+uploads/usuarios/**.*
