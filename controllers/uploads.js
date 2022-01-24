@@ -109,6 +109,14 @@ const actualizarImagenCloudinary = async (req, res = response) => {
       return res.status(500).json({ msg: "se me olvido validar esto" });
   }
 
+  // Limpia imagen previa
+  if (modelo.img) {
+    const nombreArr = modelo.img.split("/");
+    const nombre = nombreArr[nombreArr.length - 1];
+    const [public_id] = nombre.split(".");
+    cloudinary.uploader.destroy(public_id);
+  }
+
   const { tempFilePath } = req.files.archivo;
   const { secure_url } = await cloudinary.uploader.upload(tempFilePath);
 
